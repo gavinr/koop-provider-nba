@@ -1,18 +1,21 @@
 {
-  "name": "koop-provider-sample",
+  "name": "koop-provider-nba",
   "version": "1.0.0",
-  "description": "A sample provider for koop",
+  "description": "NBA shot charts to Feature Services",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "test": "standard && tape test/*.js | tap-spec"
   },
   "dependencies": {
     "config": "^1.25.1",
     "koop": "^3.4.0",
+    "moment": "^2.18.1",
+    "nodemon": "^1.11.0",
+    "proj4": "^2.4.3",
     "request": "^2.79.0"
   },
   "author": "Daniel Fenton",
@@ -25,15 +28,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koopjs/koop-provider-sample.git"
+    "url": "git+https://github.com/gavinr/koop-provider-nba.git"
   },
   "bugs": {
-    "url": "https://github.com/koopjs/koop-provider-sample/issues"
+    "url": "https://github.com/gavinr/koop-provider-nba/issues"
   },
-  "homepage": "https://github.com/koopjs/koop-provider-sample",
+  "homepage": "https://github.com/gavinr/koop-provider-nba",
   "keywords": [
     "koop",
     "provider",
-    "sample"
+    "nba",
+    "shotcharts"
   ]
 }

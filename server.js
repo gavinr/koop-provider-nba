@@ -18,12 +18,11 @@ koop.server.listen(port)
 
 const message = `
 
-Koop Sample Provider listening on ${port}
-For more docs visit: https://koopjs.github.io/docs/specs/provider/
-To find providers visit: https://www.npmjs.com/search?q=koop+provider
+Koop NBA Provider listening on ${port}
+For more docs visit: https://github.com/gavinr/koop-provider-nba
 
-Try it out in your browser: http://localhost:${port}/sample/FeatureServer/0/query
-Or on the command line: curl --silent http://localhost:${port}/sample/FeatureServer/0/query?returnCountOnly=true
+Try it out in your browser: http://localhost:${port}/nba/201566/FeatureServer/0/query
+Or on the command line: curl --silent http://localhost:${port}/nba/201566/FeatureServer/0/query?returnCountOnly=true
 
 Press control + c to exit
 `

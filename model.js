@@ -9,6 +9,7 @@ const proj4 = require('proj4')
 const moment = require('moment')
 const request = require('request').defaults({gzip: true, json: true})
 const config = require('config')
+const players = require('./players.json') // from http://stats.nba.com/js/data/ptsd/stats_ptsd.js
 const ttl = (config.nba && config.nba.ttl) || 60 * 60
 
 function Model (koop) {}
@@ -17,25 +18,70 @@ function Model (koop) {}
 Model.prototype.getData = function (req, callback) {
   // Call the remote API with our developer key
   const userAgent = config.nba.userAgent
-  const playerId = req.params.id
-  console.log('playerId', playerId)
-  request({
-    url: `http://stats.nba.com/stats/shotchartdetail?AheadBehind=&CFID=&CFPARAMS=&ClutchTime=&Conference=&ContextFilter=&ContextMeasure=FGM&DateFrom=&DateTo=&Division=&EndPeriod=10&EndRange=28800&GameEventID=&GameID=&GameSegment=&GroupID=&GroupQuantity=5&LastNGames=0&LeagueID=00&Location=&Month=0&OpponentTeamID=0&Outcome=&PORound=0&Period=0&PlayerID=${playerId}&PlayerPosition=&PointDiff=&Position=&RangeType=0&RookieYear=&Season=&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StartPeriod=1&StartRange=0&StarterBench=&TeamID=0&VsConference=&VsDivision=`,
-    headers: {
-      'User-Agent': userAgent
-    }
-  }, (err, res, body) => {
-    if (err) return callback(err)
-    // translate the response into geojson
-    const geojson = translate(body)
+  getPlayerId(req.params.id).then((playerId) => {
+    console.log('playerId', playerId)
+    request({
+      url: `http://stats.nba.com/stats/shotchartdetail?AheadBehind=&CFID=&CFPARAMS=&ClutchTime=&Conference=&ContextFilter=&ContextMeasure=FGM&DateFrom=&DateTo=&Division=&EndPeriod=10&EndRange=28800&GameEventID=&GameID=&GameSegment=&GroupID=&GroupQuantity=5&LastNGames=0&LeagueID=00&Location=&Month=0&OpponentTeamID=0&Outcome=&PORound=0&Period=0&PlayerID=${playerId}&PlayerPosition=&PointDiff=&Position=&RangeType=0&RookieYear=&Season=&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StartPeriod=1&StartRange=0&StarterBench=&TeamID=0&VsConference=&VsDivision=`,
+      headers: {
+        'User-Agent': userAgent
+      }
+    }, (err, res, body) => {
+      if (err) return callback(err)
+      // translate the response into geojson
+      const geojson = translate(body)
 
-    geojson.ttl = ttl
-    geojson.metadata = {
-      name: `${playerId}`
-    }
-    // hand off the data to Koop
-    callback(null, geojson)
+      geojson.ttl = ttl
+      geojson.metadata = {
+        name: `${playerId}`
+      }
+      // hand off the data to Koop
+      callback(null, geojson)
+    })
+  }, (err) => {
+    console.error('err', err);
   })
+}
+
+// given a string, determine if it's a number or string (name) and return the player ID no matter what.
+function getPlayerId(input) {
+  return new Promise((resolve, reject) => {
+    const playerId = input
+    if(input && !isNumeric(input)) {
+      // Assume this is a player name (string) and lookup the playerId from the API first.
+      const retPlayerId = getPlayerIdFromName(input)
+      if(retPlayerId !== false) {
+        resolve(retPlayerId)
+      } else {
+        reject()
+      }
+    } else {
+      resolve(playerId)
+    }
+  });
+  
+}
+
+// Determine if a string is "numeric" and return a boolean.
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+// Given a name in the format "JamesLebron" or "James Lebron" or "James_Lebron" or "James, Lebron",
+// return the player ID.
+function getPlayerIdFromName(name) {
+  let searchName = name.replace('_', '').replace(' ', '').replace(',', '').toLowerCase();
+  const candidatePlayers = players.filter((nameObject) => {
+    if(nameObject[1].replace(' ', '').replace(',', '').toLowerCase() == searchName) {
+      return true;
+    }
+    return false;
+  })
+
+  if(candidatePlayers.length == 1) {
+    return candidatePlayers[0][0];
+  } else {
+    return false;
+  }
 }
 
 function translate (input) {

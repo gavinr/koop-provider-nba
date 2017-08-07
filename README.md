@@ -13,5 +13,11 @@ Run server:
 Example API Query:
 - `curl localhost:8080/nba/201566/FeatureServer/0/query?returnCountOnly=true`
 
+Player names also work (last name first):
+- `curl localhost:8080/nba/201566/FeatureServer/0/query?returnCountOnly=true`
+
 Tests:
+
+(not currently working)
+
 - `npm test`

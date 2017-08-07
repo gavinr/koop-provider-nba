@@ -18,7 +18,7 @@
     "proj4": "^2.4.3",
     "request": "^2.79.0"
   },
-  "author": "Daniel Fenton",
+  "author": "Gavin Rehkemper",
   "license": "Apache-2.0",
   "devDependencies": {
     "nock": "^9.0.2",

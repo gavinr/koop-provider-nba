@@ -22,7 +22,7 @@ Model.prototype.getData = function (req, callback) {
     console.log('playerId', playerId)
     console.log('userAgent:', userAgent);
     request({
-      url: `http://stats.nba.com/stats/shotchartdetail?AheadBehind=&CFID=&CFPARAMS=&ClutchTime=&Conference=&ContextFilter=&ContextMeasure=FGM&DateFrom=&DateTo=&Division=&EndPeriod=10&EndRange=28800&GameEventID=&GameID=&GameSegment=&GroupID=&GroupQuantity=5&LastNGames=0&LeagueID=00&Location=&Month=0&OpponentTeamID=0&Outcome=&PORound=0&Period=0&PlayerID=${playerId}&PlayerPosition=&PointDiff=&Position=&RangeType=0&RookieYear=&Season=&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StartPeriod=1&StartRange=0&StarterBench=&TeamID=0&VsConference=&VsDivision=`,
+      url: `https://rawgit.com/sitepoint-editors/json-examples/master/src/db.json`,
       headers: {
         'User-Agent': userAgent
       }

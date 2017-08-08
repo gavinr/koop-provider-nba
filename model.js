@@ -26,6 +26,7 @@ Model.prototype.getData = function (req, callback) {
         'User-Agent': userAgent
       }
     }, (err, res, body) => {
+      console.log('got request back');
       if (err) return callback(err)
       // translate the response into geojson
       const geojson = translate(body)
@@ -34,6 +35,8 @@ Model.prototype.getData = function (req, callback) {
       geojson.metadata = {
         name: `${playerId}`
       }
+
+      console.log('handing off to koop');
       // hand off the data to Koop
       callback(null, geojson)
     })

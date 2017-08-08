@@ -22,7 +22,7 @@ Model.prototype.getData = function (req, callback) {
     console.log('playerId', playerId)
     console.log('userAgent:', userAgent);
     request({
-      url: `https://rawgit.com/sitepoint-editors/json-examples/master/src/db.json`,
+      url: `https://gavinr.com/mj.json`,
       headers: {
         'User-Agent': userAgent
       }

@@ -21,3 +21,7 @@ Tests:
 (not currently working)
 
 - `npm test`
+
+## Deployment Notes
+
+- Note that the NBA Stats API seems to block Amazon AWS, Heroku, and maybe other cloud VM providers. More info [here](https://github.com/bttmly/nba/issues/41#issuecomment-294879571).
